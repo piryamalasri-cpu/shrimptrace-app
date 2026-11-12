@@ -1,0 +1,103 @@
+import React, { useState } from 'react';
+import { Phone, PhoneCall, MessageCircle, X, Check, ShieldCheck } from 'lucide-react';
+import { ShrimpSticker } from './ShrimpSticker';
+import { playAudioBeep } from '../utils/audio';
+
+interface DoctorCallModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: (msg: string) => void;
+}
+
+export const DoctorCallModal: React.FC<DoctorCallModalProps> = ({ isOpen, onClose, onSuccess }) => {
+  const [isCalling, setIsCalling] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleCall = () => {
+    setIsCalling(true);
+    playAudioBeep(480, 'sine', 0.4);
+    setTimeout(() => {
+      setIsCalling(false);
+      onSuccess('กำลังเชื่อมต่อสัตวแพทย์สัตว์น้ำ น.สพ. ดร.ธีระชัย ปัญญาสัตว์น้ำ (089-123-4567)');
+      onClose();
+    }, 1200);
+  };
+
+  const handleLine = () => {
+    playAudioBeep(640, 'triangle', 0.2);
+    onSuccess('ส่งข้อความแจ้งเตือนด่วนไปยัง LINE หมอสัตว์น้ำประจำฟาร์มแล้ว');
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
+      <div className="shrimp-card w-full max-w-md p-6 bg-[#FFFEFB] border-2 border-[#F2C9A0] rounded-[28px] shadow-2xl relative">
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 p-2 rounded-full hover:bg-[#FFE9D6] text-[#1A2B33]/70 transition-colors"
+          aria-label="ปิด"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        <div className="flex items-center gap-3 mb-4">
+          <ShrimpSticker size="md" withBadge />
+          <div>
+            <span className="text-xs font-bold text-[#FF7A1A] bg-[#FFF4EA] px-2 py-0.5 rounded-full border border-[#F2C9A0]">
+              สายด่วนสุขภาพกุ้ง 24 ชม.
+            </span>
+            <h3 className="text-xl font-bold text-[#1A2B33] mt-1">
+              โทรหาหมอกุ้ง (สัตวแพทย์)
+            </h3>
+          </div>
+        </div>
+
+        <div className="p-4 bg-[#FFF9F2] border border-[#F2C9A0] rounded-2xl mb-5 space-y-2">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-[#FF7A1A]/10 border border-[#FF7A1A]/30 flex items-center justify-center text-xl shrink-0">
+              🩺
+            </div>
+            <div>
+              <p className="font-bold text-[#1A2B33] text-base">น.สพ. ดร.ธีระชัย ปัญญาสัตว์น้ำ</p>
+              <p className="text-xs text-[#1A2B33]/70">ผู้เชี่ยวชาญโรคกุ้งทะเล & กรมประมง</p>
+              <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-semibold mt-0.5">
+                <ShieldCheck className="w-3.5 h-3.5" /> แพทย์ประจำเขตบางบ่อ - ฉะเชิงเทรา
+              </div>
+            </div>
+          </div>
+          <div className="pt-2 border-t border-[#F2C9A0]/50 text-sm">
+            <span className="text-[#1A2B33]/60 text-xs block">เบอร์โทรศัพท์ด่วน:</span>
+            <span className="font-bold text-lg text-[#FF7A1A] tracking-wider">089-123-4567</span>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <button
+            onClick={handleCall}
+            disabled={isCalling}
+            className="w-full h-14 bg-[#FF7A1A] hover:bg-[#E65800] text-white text-lg font-bold rounded-2xl shadow-lg shadow-[#FF7A1A]/20 transition-all flex items-center justify-center gap-3 active:scale-98"
+          >
+            <PhoneCall className={`w-6 h-6 ${isCalling ? 'animate-bounce' : ''}`} />
+            {isCalling ? 'กำลังต่อสาย...' : 'โทรออกทันที (089-123-4567)'}
+          </button>
+
+          <button
+            onClick={handleLine}
+            className="w-full h-12 bg-[#06C755] hover:bg-[#05b34c] text-white text-base font-bold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2"
+          >
+            <MessageCircle className="w-5 h-5" />
+            ปรึกษาผ่าน LINE หมอกุ้ง
+          </button>
+
+          <button
+            onClick={onClose}
+            className="w-full h-11 bg-white border border-[#F2C9A0] text-[#1A2B33]/80 text-sm font-semibold rounded-2xl hover:bg-[#FFF4EA] transition-colors"
+          >
+            ปิดหน้าต่าง
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

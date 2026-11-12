@@ -1,0 +1,6 @@
+{
+  "name": "ShrimpTrace - กุ้งไทยตรวจวงจร MVP",
+  "description": "Thai Shrimp ERP & Traceability System - ระบบตรวจสอบย้อนกลับและบริหารจัดการฟาร์มกุ้งไทย",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
